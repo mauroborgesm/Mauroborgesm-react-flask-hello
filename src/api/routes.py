@@ -40,6 +40,14 @@ def user_get(user_id):
         return "Usuario no registrado", 404
     return (user.serialize())
 
+@api.route('/user/<int:user_id>/favorites', methods=['GET'])
+def user_favorites_get (user_id):
+    favorites=Favorites.query.filter_by(user_id=user_id).all()
+    favorites=list(map(lambda fav : fav.serialize(), favorites))
+    return jsonify(favorites)
+
+
+
 @api.route('/favorites/<string:element>/<int:element_id>', methods=['POST'])
 def favorite_planet_create(element, element_id):
     user_id=request.get_json()["user_id"]
